@@ -68,6 +68,7 @@
     stop.addEventListener('click', () => {
       stop.disabled = true;
       start.disabled = false;
+      laps.disabled = true;
       clearInterval(counter);
     });
 
