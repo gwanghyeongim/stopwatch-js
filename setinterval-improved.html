@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="utf-8">
+  <title>Simple setInterval clock</title>
+  <style>
+    p {
+      font-family: sans-serif;
+    }
+
+    button {
+      height: 30px;
+      width: 75px;
+      margin-bottom: 5px;
+      font-size: 0.8em
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <button class="start">Start</button>
+    <button class="stop">Stop</button>
+  </div>
+  <div>
+    <button class="reset">Reset</button>
+    <button class="laps">Laps</button>
+  </div>
+  <p class="clock"></p>
+  <script>
+    const start = document.querySelector('.start');
+    const stop = document.querySelector('.stop');
+    const reset = document.querySelector('.reset');
+    const clock = document.querySelector('.clock');
+    const laps = document.querySelector('.laps');
+
+    let counter;
+    let hr;
+    let min;
+    let sec;
+
+    clock.textContent = '00:00:00:00'
+
+    function startEveFunc() {
+      const startTime = Date.now()
+      start.disabled = true;
+      stop.disabled = false;
+      counter = setInterval(() => {
+        let rawSec = Math.floor((Date.now() - startTime) / 1000)
+        hr = Math.floor(rawSec / 3600)
+        min = Math.floor((rawSec % 3600) / 60)
+        sec = Math.floor(rawSec % 60)
+        milSec = Math.floor(((Date.now() - startTime) / 10) % 100)
+
+        hr = (hr < 10) ? `0${hr}` : hr
+        min = (min < 10) ? `0${min}` : min
+        sec = (sec < 10) ? `0${sec}` : sec
+        milSec = milSec < 10 ? `0${milSec}` : milSec
+
+        clock.textContent = `${hr}:${min}:${sec}:${milSec}`
+      })
+    }
+
+    start.addEventListener('click', startEveFunc);
+
+    stop.addEventListener('click', () => {
+      stop.disabled = true;
+      start.disabled = false;
+      clearInterval(counter);
+    });
+
+    reset.addEventListener('click', () => {
+      stop.disabled = false;
+      start.disabled = false;
+      clearInterval(counter);
+      const allPara = document.querySelectorAll('p')
+      for (let i = 0; i < allPara.length; i++) {
+        allPara[i].textContent = ''
+      }
+      clock.textContent = '00:00:00:00'
+    });
+
+    laps.addEventListener('click', () => {
+      const para = document.createElement('p')
+      para.textContent = `${hr}:${min}:${sec}:${milSec}`
+      clock.insertAdjacentElement('afterend', para)
+    })
+  </script>
+</body>
+
+</html>
