@@ -25,7 +25,7 @@
   </div>
   <div>
     <button class="reset">Reset</button>
-    <button class="laps">Laps</button>
+    <button class="laps" disabled>Laps</button>
   </div>
   <p class="clock"></p>
   <script>
@@ -59,6 +59,7 @@
         milSec = milSec < 10 ? `0${milSec}` : milSec
 
         clock.textContent = `${hr}:${min}:${sec}:${milSec}`
+        labs.disabled = false;
       })
     }
 
@@ -79,6 +80,7 @@
         allPara[i].textContent = ''
       }
       clock.textContent = '00:00:00:00'
+      laps.disabled = true;
     });
 
     laps.addEventListener('click', () => {
